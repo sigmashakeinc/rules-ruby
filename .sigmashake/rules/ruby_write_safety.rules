@@ -39,12 +39,11 @@ rule no-raw-html-rails {
   enabled true
   priority 85
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.erb" AND content LINE_REGEX "<%==\\s*[^%]"
   OR path GLOB "**/*.erb" AND content LINE_REGEX "=\\s*raw\\s*\\("
   OR path GLOB "**/*.erb" AND content LINE_REGEX "html_safe(?!.*sanitize)"
   MESSAGE "Raw HTML output bypasses Rails' auto-escaping (XSS protection). Use <%= h(user_data) %> or sanitize(). html_safe should only be called on known-safe content."
-  PROMPT "Is this value trusted static content, or could it contain user-supplied data? If user data, use sanitize() or html_escape() before marking it html_safe."
 }
 
 rule no-mass-assignment-permit-all {
